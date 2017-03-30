@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent (typeof(AudioSource))]
+[RequireComponent(typeof(AudioSource))]
 public class Gun : MonoBehaviour {
 
     public enum GunType { Semi, Auto };
@@ -11,11 +11,21 @@ public class Gun : MonoBehaviour {
     public GunType gunType;
     [SerializeField]
     private float rpm = 450f;
-    private AudioSource gunSound;
-    public float gunID;
-    public LayerMask collisionMask;
+    [SerializeField]
+    private AudioClip[] gunSound;
     [SerializeField]
     private float gunDamage = 2f;
+    [SerializeField]
+    private int maxMagAmmo;
+    [SerializeField]
+    private int currMagAmmo;
+
+    public float gunID;
+    public LayerMask collisionMask;
+    private AudioSource audioSource;
+    private AudioClip shootSound;
+    private AudioClip reloadSound;
+    private bool reloading;
 
     // Bullet variables
     private float secondsBetweenShots;
@@ -25,16 +35,29 @@ public class Gun : MonoBehaviour {
     public Transform spawn;
     public Transform shellEjectPoint;
     public Rigidbody shell;
+    [HideInInspector]
+    public GUI gui;
     private LineRenderer tracer;
 
     private void Start()
     {
         secondsBetweenShots = 60 / rpm;
-        gunSound = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
         if (GetComponent<LineRenderer>())
         {
             tracer = GetComponent<LineRenderer>();
         }
+
+        if (gui)
+        {
+            gui.SetAmmoCount(currMagAmmo, maxMagAmmo);
+        }
+
+        // Index 0 shoot sound
+        shootSound = gunSound[0];
+
+        // Index 1 reload sound
+        reloadSound = gunSound[1];
     }
 
 
@@ -58,15 +81,24 @@ public class Gun : MonoBehaviour {
             }
 
             nextPossibleShotTime = Time.time + secondsBetweenShots;
+            currMagAmmo--;
 
-            gunSound.Play();
+            if(gui)
+            {
+                gui.SetAmmoCount(currMagAmmo, maxMagAmmo);
+            }
+
+            //Play gun shoot sound
+            audioSource.clip = shootSound;
+            audioSource.Play();
+
             if(tracer)
             {
                 StartCoroutine("RenderTracer", ray.direction * shootDist);
             }
 
             Rigidbody newShell = Instantiate(shell, shellEjectPoint.position, Quaternion.identity) as Rigidbody;
-            newShell.AddForce(shellEjectPoint.forward * Random.Range(150f, 200f) + spawn.forward * Random.Range(-10f,10f));
+            newShell.AddForce(shellEjectPoint.forward * Random.Range(100f, 150f) + spawn.forward * Random.Range(-5f,5f));
         }
     }
 
@@ -80,14 +112,33 @@ public class Gun : MonoBehaviour {
 
     private bool canShoot() {
         bool canShoot = true;
-        if(Time.time < nextPossibleShotTime )
+        if(Time.time < nextPossibleShotTime || (0 >= currMagAmmo) || (reloading))
         {
             canShoot = false;
         }
-
         return canShoot;
     }
 
+    public bool isReloading()
+    {
+        return reloading;
+    }
+    
+    public bool Reload()
+    {
+        if (currMagAmmo != maxMagAmmo)
+        {
+            reloading = true;
+            return true;
+        }
+        return false;
+    }
+
+    public void finishReload()
+    {
+        StartCoroutine(ReloadTime());
+    }
+    
     IEnumerator RenderTracer(Vector3 hitPoint)
     {
         tracer.enabled = true;
@@ -96,5 +147,19 @@ public class Gun : MonoBehaviour {
 
         yield return null;
         tracer.enabled = false;
+    }
+    IEnumerator ReloadTime()
+    {
+        // Play gun reload sound
+        audioSource.clip = reloadSound;
+        audioSource.Play();
+        yield return new WaitForSeconds(audioSource.clip.length);
+
+        reloading = false;
+        currMagAmmo = maxMagAmmo;
+        if (gui)
+        {
+            gui.SetAmmoCount(currMagAmmo, maxMagAmmo);
+        }
     }
 }

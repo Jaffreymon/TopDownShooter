@@ -8,6 +8,10 @@ public class ObjectPhysics : MonoBehaviour
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        if (hit.gameObject.tag == "Ground") {
+            return;
+        }
+
         Rigidbody body = hit.collider.attachedRigidbody;
 
         //checking whether rigidbody is either non-existant or kinematic

@@ -16,6 +16,11 @@ public class Player : Entity {
         LevelUp();
     }
 
+    void Update()
+    {
+        gui.SetHealth(this.getHealth());
+    }
+
     public void AddExperience(float exp)
     {
         currExperience += exp;
@@ -34,5 +39,10 @@ public class Player : Entity {
         nextExperienceLvl = level * 50 + Mathf.Pow(level * 2, 2);
 
         AddExperience(0);
+    }
+
+    public override void Die()
+    {
+        Debug.Log("Here");
     }
 }

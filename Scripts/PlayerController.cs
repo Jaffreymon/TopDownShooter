@@ -17,23 +17,30 @@ public class PlayerController : MonoBehaviour {
     // System variables
     private Quaternion targetRotation;
     private Vector3 currVelocityModify;
+    private int gunSlotNum = 0;
+    private bool flashlightOn= false;
 
     // Game Components
     public Transform handHold;
     public Gun[] guns;
     private Gun currGun;
     private CharacterController playerController;
+    [SerializeField]
+    private GameObject flashlight;
     private Camera cam;
+    private GUI gui;
 
     // Use this for initialization
     void Start () {
         playerController = GetComponent<CharacterController>();
         cam = Camera.main;
+        gui = GameObject.FindGameObjectWithTag("GUI").GetComponent<GUI>();
+        Cursor.visible = false;
 
-        EquipGun(0);
+        EquipGun(gunSlotNum);
 	}
 	
-	// Update is called once per frame
+	// Update is called once per frame. Player controls go here
 	void Update () {
         ControlMouse();
 
@@ -48,20 +55,48 @@ public class PlayerController : MonoBehaviour {
             {
                 currGun.ShootAuto();
             }
+
+            if(Input.GetButtonDown("Reload"))
+            {
+                if(currGun.Reload())
+                {
+                    currGun.finishReload();
+                }
+            }
         }
 
         // Detects gun switch via numpad
         for(int idx = 0; idx < guns.Length; idx++)
         {
-            if(Input.GetKeyDown(idx+1 + "") || Input.GetKeyDown("[" + (idx+1) + "]"))
+            if(Input.GetKeyDown(idx+1 + "") || Input.GetKeyDown("[" + (idx+1) + "]") && !currGun.isReloading())
             {
+                gunSlotNum = idx;
                 EquipGun(idx);
                 break;
             }
         }
 
         //Detects gun switch via mouse scroll
-        //TODO
+        float mouseScrollMove = Input.GetAxis("MouseScroll");
+        if ( mouseScrollMove != 0 && !currGun.isReloading())
+        {
+            if(mouseScrollMove > 0 && gunSlotNum != (guns.Length - 1)) {
+                gunSlotNum = Mathf.Clamp(gunSlotNum + 1, 0, guns.Length - 1);
+                EquipGun(gunSlotNum);
+            }
+            else if(mouseScrollMove < 0 && gunSlotNum != 0)
+            {
+                gunSlotNum = Mathf.Clamp(gunSlotNum - 1, 0, guns.Length - 1);
+                EquipGun(gunSlotNum);
+            }
+        }
+
+        //Detects flashlight on
+        if(Input.GetButtonDown("Flashlight"))
+        {
+            flashlightOn = !flashlightOn;
+            flashlight.SetActive(flashlightOn);
+        }
 	}
 
     void EquipGun(int id)
@@ -69,6 +104,9 @@ public class PlayerController : MonoBehaviour {
         if(currGun) { Destroy(currGun.gameObject);  }
         currGun = Instantiate(guns[id], handHold.position, handHold.rotation) as Gun;
         currGun.transform.parent = handHold;
+        currGun.gui = gui;
+
+        gui.SetCurrGunName(currGun.name.Replace("(Clone)", "").Trim());
     }
 
     // Player looks where their mouse is over
@@ -82,6 +120,7 @@ public class PlayerController : MonoBehaviour {
         Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
         currVelocityModify = Vector3.MoveTowards(currVelocityModify, input, acceleration * Time.deltaTime);
         Vector3 motion = currVelocityModify;
+
         // Corrects player movement speed at diagnols
         motion *= (Mathf.Abs(input.x) == 1 && Mathf.Abs(input.z) == 1) ? 0.7f : 1f;
         // Increases player movement based on running or walking

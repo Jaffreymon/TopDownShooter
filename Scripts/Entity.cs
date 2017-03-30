@@ -17,6 +17,11 @@ public class Entity : MonoBehaviour {
         }
     }
 
+    public float getHealth()
+    {
+        return health;
+    }
+
     public virtual void Die()
     {
         Destroy(gameObject);
