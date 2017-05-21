@@ -127,6 +127,7 @@ public class AIPath : AIBase {
 	 * \see #Init
 	 */
 	protected virtual void Start () {
+        target = GameObject.FindGameObjectWithTag("Player").transform;
 		startHasRun = true;
 		Init();
 	}
