@@ -8,11 +8,11 @@ public class Player : Entity {
     private float nextExperienceLvl;
 
     [SerializeField]
-    private GUI gui;
+    private GUI_HUD gui;
 
     void Start()
     {
-        gui = GameObject.FindGameObjectWithTag("GUI").GetComponent<GUI>();
+        gui = GameObject.FindGameObjectWithTag("GUI").GetComponent<GUI_HUD>();
         LevelUp();
     }
 

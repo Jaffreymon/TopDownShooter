@@ -7,8 +7,6 @@ public class Enemy : Entity {
     [SerializeField]
     private float expOnDeath;
     [SerializeField]
-    private float moveSpeed;
-    [SerializeField]
     private float dealtDamage;
 
     private Player player;
@@ -16,11 +14,6 @@ public class Enemy : Entity {
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-    }
-
-    private void Update()
-    {
-        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, moveSpeed * Time.deltaTime);
     }
 
     public override void Die()
@@ -33,6 +26,7 @@ public class Enemy : Entity {
     {
         if (col.transform.tag == "Player")
         {
+            Debug.Log("Collision");
             player.takeDamage(dealtDamage);
         }
     }

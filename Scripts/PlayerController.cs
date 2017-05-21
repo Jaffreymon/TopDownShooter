@@ -28,13 +28,13 @@ public class PlayerController : MonoBehaviour {
     [SerializeField]
     private GameObject flashlight;
     private Camera cam;
-    private GUI gui;
+    private GUI_HUD gui;
 
     // Use this for initialization
     void Start () {
         playerController = GetComponent<CharacterController>();
         cam = Camera.main;
-        gui = GameObject.FindGameObjectWithTag("GUI").GetComponent<GUI>();
+        gui = GameObject.FindGameObjectWithTag("GUI").GetComponent<GUI_HUD>();
         Cursor.visible = false;
 
         EquipGun(gunSlotNum);

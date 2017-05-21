@@ -36,7 +36,7 @@ public class Gun : MonoBehaviour {
     public Transform shellEjectPoint;
     public Rigidbody shell;
     [HideInInspector]
-    public GUI gui;
+    public GUI_HUD gui;
     private LineRenderer tracer;
 
     private void Start()

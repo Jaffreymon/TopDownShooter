@@ -7,6 +7,8 @@ public class DayNightCycle : MonoBehaviour {
     private double cycleMins;
     private double cycleCalc;
     private float sunDimRate;
+    private int dayCount;
+    private bool currDay;
 
     [SerializeField]
     private Light sun;
@@ -21,11 +23,12 @@ public class DayNightCycle : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         transform.Rotate(0, 0, (float) -cycleCalc, Space.World);
-        // Sunsets
+        // Day
         if(Mathf.Abs(transform.rotation.z) >= 0.5) 
         {
             sun.intensity -= sunDimRate * Time.deltaTime;
         }
+        // Night
         else if(Mathf.Abs(transform.rotation.z) < 0.5)
         {
             sun.intensity = Mathf.Clamp(sun.intensity + (sunDimRate * Time.deltaTime), 0, 1);
