@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class ObjectPhysics : MonoBehaviour
 {
@@ -8,7 +7,7 @@ public class ObjectPhysics : MonoBehaviour
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (hit.gameObject.tag == "Ground") {
+        if (hit.gameObject.tag == "Ground" || hit.gameObject.tag == "Enemy") {
             return;
         }
 

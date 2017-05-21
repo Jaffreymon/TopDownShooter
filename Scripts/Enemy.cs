@@ -8,6 +8,8 @@ public class Enemy : Entity {
     private float expOnDeath;
     [SerializeField]
     private float dealtDamage;
+    [SerializeField]
+    private float attackRange;
 
     private Player player;
 
@@ -16,18 +18,28 @@ public class Enemy : Entity {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
+    private void FixedUpdate()
+    {
+        // Enemy always looking toward player
+        transform.LookAt(player.transform);
+
+        RaycastHit hit;
+        Ray enemyKillBox = new Ray(transform.position, transform.forward);
+
+        // Detects if enemy is on "contact" with player
+        if (Physics.Raycast(enemyKillBox, out hit, attackRange))
+        {
+            if (hit.collider.tag == "Player")
+            {
+                // Damages player on contact
+                player.takeDamage(dealtDamage);
+            }
+        }
+    }
+
     public override void Die()
     {
         player.AddExperience(expOnDeath);
         base.Die();
-    }
-
-    void OnCollisionEnter(Collision col)
-    {
-        if (col.transform.tag == "Player")
-        {
-            Debug.Log("Collision");
-            player.takeDamage(dealtDamage);
-        }
     }
 }
