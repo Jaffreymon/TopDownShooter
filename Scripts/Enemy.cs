@@ -12,10 +12,12 @@ public class Enemy : Entity {
     private float attackRange;
 
     private Player player;
+    private GameManager GM;
 
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        GM = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
     }
 
     private void FixedUpdate()
@@ -40,6 +42,7 @@ public class Enemy : Entity {
     public override void Die()
     {
         player.AddExperience(expOnDeath);
+        GM.destroyEnemy();
         base.Die();
     }
 }

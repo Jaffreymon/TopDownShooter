@@ -41,8 +41,13 @@ public class Player : Entity {
         AddExperience(0);
     }
 
+    public int getPlayerLevel()
+    {
+        return level;
+    }
+
     public override void Die()
     {
-        Debug.Log("Here");
+        //TODO
     }
 }
