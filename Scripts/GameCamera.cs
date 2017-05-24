@@ -23,8 +23,7 @@ public class GameCamera : MonoBehaviour {
         }
         else
         {
-            cam.transform.LookAt(Vector3.zero);
-            cam.transform.Rotate(Vector3.zero, 45f);
+            cam.transform.LookAt(new Vector3(0,0,10));
         }
     }
 }
