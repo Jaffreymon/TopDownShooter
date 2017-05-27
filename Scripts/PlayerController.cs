@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour {
     private Vector3 currVelocityModify;
     private int gunSlotNum = 0;
     private bool flashlightOn= false;
+    private bool paused = false;
 
     // Game Components
     public Transform handHold;
@@ -42,6 +43,15 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame. Player controls go here
 	void Update () {
+        // Player pauses game
+        if (Input.GetButtonDown("Pause"))
+        {
+            pauseGame();
+        }
+
+        // Ignores input if game paused
+        if(paused) { return; }
+
         ControlMouse();
 
         // Gun input if there exists gun
@@ -92,7 +102,7 @@ public class PlayerController : MonoBehaviour {
         }
 
         //Detects flashlight on
-        if(Input.GetButtonDown("Flashlight"))
+        if (Input.GetButtonDown("Flashlight"))
         {
             flashlightOn = !flashlightOn;
             flashlight.SetActive(flashlightOn);
@@ -150,5 +160,11 @@ public class PlayerController : MonoBehaviour {
         motion += Vector3.up * -8;
 
         playerController.Move(motion * Time.deltaTime);
+    }
+
+    private void pauseGame()
+    {
+        paused = !paused;
+        Time.timeScale = (paused) ? 0 : 1;
     }
 }

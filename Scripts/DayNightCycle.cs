@@ -22,7 +22,7 @@ public class DayNightCycle : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        transform.Rotate(0, 0, (float) -cycleCalc, Space.World);
+        transform.Rotate(0, 0, (float) -cycleCalc * Time.timeScale, Space.World);
 
         // Day
         if (0 <= transform.eulerAngles.z && transform.eulerAngles.z <= 40) 
