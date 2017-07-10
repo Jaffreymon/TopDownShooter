@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour {
 
     // Player Handling
     [SerializeField]
-    private float rotationSpeed = 500f;
+    private float rotationSpeed = 650f;
     [SerializeField]
     private float walkSpeed = 3.5f;
     [SerializeField]
@@ -26,14 +26,16 @@ public class PlayerController : MonoBehaviour {
     public Gun[] guns;
     private Gun currGun;
     private CharacterController playerController;
+    private InGameMenu inGameMenu;
     [SerializeField]
     private GameObject flashlight;
     private Camera cam;
     private GUI_HUD gui;
 
     // Use this for initialization
-    void Start () {
+    void Awake () {
         playerController = GetComponent<CharacterController>();
+        inGameMenu = GetComponent<InGameMenu>();
         cam = Camera.main;
         gui = GameObject.FindGameObjectWithTag("GUI").GetComponent<GUI_HUD>();
         Cursor.visible = false;
@@ -162,9 +164,9 @@ public class PlayerController : MonoBehaviour {
         playerController.Move(motion * Time.deltaTime);
     }
 
-    private void pauseGame()
+    public void pauseGame()
     {
         paused = !paused;
-        Time.timeScale = (paused) ? 0 : 1;
+        inGameMenu.pause();
     }
 }

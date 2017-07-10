@@ -14,7 +14,7 @@ public class DayNightCycle : MonoBehaviour {
     private Light sun;
 
     // Use this for initialization
-    void Start () {
+    void OnEnable () {
         cycleMins = 7f;
         sunDimRate = 0.1f;
         cycleCalc = 0.1/cycleMins * -1;

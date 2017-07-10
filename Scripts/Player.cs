@@ -10,7 +10,7 @@ public class Player : Entity {
     [SerializeField]
     private GUI_HUD gui;
 
-    void Start()
+    void OnEnable()
     {
         gui = GameObject.FindGameObjectWithTag("GUI").GetComponent<GUI_HUD>();
         LevelUp();

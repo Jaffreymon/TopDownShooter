@@ -6,34 +6,43 @@ using UnityEngine.UI;
 public class GUI_HUD : MonoBehaviour {
 
     [SerializeField]
-    private Transform expBarFill;
+    private Text playerLevelText;
     [SerializeField]
-    private Text levelText;
+    private GameObject expBarFill;
     [SerializeField]
-    private Text ammoText;
+    private Slider expBar;
     [SerializeField]
-    private Text gunNameText;
+    private Text ammoCountText;
     [SerializeField]
-    private Text healthText;
+    private Text healthCountText;
 
     public void SetPlayerExperience(float percentToLevel, int playerLevel)
     {
-        levelText.text = "Level: " + playerLevel;
-        expBarFill.localScale = new Vector3(1f, percentToLevel,1f);
+        playerLevelText.text = "Level: " + playerLevel;
+        expBar.value = percentToLevel;
+        
+        if(expBar.value == 0)
+        {
+            expBarFill.SetActive(false);
+        }
+        else
+        {
+            expBarFill.SetActive(true);
+        }
     }
 
     public void SetAmmoCount(int ammoInMag, int maxMagAmmo)
     {
-        ammoText.text = ammoInMag + "/" + maxMagAmmo;
+        ammoCountText.text = "Ammo: " + ammoInMag + "/" + maxMagAmmo;
     }
 
     public void SetCurrGunName(string gunName)
     {
-        gunNameText.text = gunName;
+        
     }
 
     public void SetHealth(float health)
     {
-        healthText.text = "Health: " + health;
+        healthCountText.text = "Health: " + health;
     }
 }

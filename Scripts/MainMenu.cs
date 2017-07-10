@@ -21,8 +21,9 @@ public class MainMenu : MonoBehaviour {
     private Dropdown textureQualityOption;
 
     private Resolution[] userResolutions;
+    private GameObject gameHUD;
 
-    private void Start()
+    private void OnEnable()
     {
         inOptions = false;
         resolutionOption.ClearOptions();

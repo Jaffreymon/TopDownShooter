@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour {
 
     private Player player;
 
-    void Start () {
+    void OnEnable () {
         InvokeRepeating("spawnEnemy", 0.01f,spawnTimeDelay);
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
