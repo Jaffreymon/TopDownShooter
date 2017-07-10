@@ -19,6 +19,8 @@ public class MainMenu : MonoBehaviour {
     private Toggle fullscreenToggle;
     [SerializeField]
     private Dropdown textureQualityOption;
+    [SerializeField]
+    private Slider sensitivityOption;
 
     private Resolution[] userResolutions;
     private GameObject gameHUD;
@@ -29,6 +31,7 @@ public class MainMenu : MonoBehaviour {
         resolutionOption.ClearOptions();
         fullscreenToggle.isOn = Screen.fullScreen;
         userResolutions = Screen.resolutions;
+        sensitivityOption.value = PlayerPrefs.GetFloat("RotationSensitivity", 4000f);
 
         foreach (Resolution resolution in userResolutions)
         {
@@ -65,5 +68,10 @@ public class MainMenu : MonoBehaviour {
     public void textureQualityChange()
     {
         QualitySettings.masterTextureLimit = textureQualityOption.value;
+    }
+
+    public void sensitivityChange()
+    {
+        PlayerPrefs.SetFloat("RotationSensitivity",sensitivityOption.value);
     }
 }

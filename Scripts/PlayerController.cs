@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour {
 
     // Player Handling
     [SerializeField]
-    private float rotationSpeed = 650f;
+    private float rotationSpeed;
     [SerializeField]
     private float walkSpeed = 3.5f;
     [SerializeField]
@@ -37,8 +37,8 @@ public class PlayerController : MonoBehaviour {
         playerController = GetComponent<CharacterController>();
         inGameMenu = GetComponent<InGameMenu>();
         cam = Camera.main;
-        gui = GameObject.FindGameObjectWithTag("GUI").GetComponent<GUI_HUD>();
         Cursor.visible = false;
+        rotationSpeed = PlayerPrefs.GetFloat("RotationSensitivity");
 
         EquipGun(gunSlotNum);
 	}
@@ -116,9 +116,6 @@ public class PlayerController : MonoBehaviour {
         if(currGun) { Destroy(currGun.gameObject);  }
         currGun = Instantiate(guns[id], handHold.position, handHold.rotation) as Gun;
         currGun.transform.parent = handHold;
-        currGun.gui = gui;
-
-        gui.SetCurrGunName(currGun.name.Replace("(Clone)", "").Trim());
     }
 
     // Player looks where their mouse is over

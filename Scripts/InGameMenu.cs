@@ -14,11 +14,9 @@ public class InGameMenu : MonoBehaviour {
     private GameObject gameMenu;
 
     // Use this for initialization
-    void OnEnable () {
+    void Start () {
         inOptions = false;
-        Time.timeScale = 1;
-	}
-
+    }
 
     public void pause()
     {
@@ -31,6 +29,7 @@ public class InGameMenu : MonoBehaviour {
     public void StartLevel(string _levelName)
     {
         SceneManager.LoadScene(_levelName);
+        Time.timeScale = 1;
     }
 
     public void QuitApp()
