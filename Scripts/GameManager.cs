@@ -12,16 +12,18 @@ public class GameManager : MonoBehaviour {
     [SerializeField]
     private float spawnTimeDelay;
     [SerializeField]
-    private float maxEnemies = 5;
+    private float maxEnemies;
     private float currEnemies;
+    private const int baseEnemyProbability = 41;
+    private int enemyProbability;
 
     public Text enemyCountHUD;
-
     private Player player;
 
     void OnEnable () {
-        InvokeRepeating("spawnEnemy", 0.01f,spawnTimeDelay);
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        enemyProbability = baseEnemyProbability;
+        StartCoroutine(initSpawnTime());
     }
 
     void Update()
@@ -38,9 +40,10 @@ public class GameManager : MonoBehaviour {
     {
         if (maxEnemies + player.getPlayerLevel() > currEnemies)
         {
-            int spawnPoint = Random.Range(0, 7);
+            int spawnPointPos = getSpawnPosition();
+            int enemyType = getEnemyType();
 
-            Instantiate(enemies[0], spawnpoints[spawnPoint].position, spawnpoints[spawnPoint].rotation);
+            Instantiate(enemies[enemyType], spawnpoints[spawnPointPos].position, spawnpoints[spawnPointPos].rotation);
             currEnemies++;
         }
     }
@@ -48,5 +51,37 @@ public class GameManager : MonoBehaviour {
     public void destroyEnemy()
     {
         currEnemies--;
+    }
+
+    IEnumerator initSpawnTime()
+    {
+        while( true )
+        {
+            spawnEnemy();
+            yield return new WaitForSeconds(spawnTimeDelay);
+        }
+    }
+
+    private int getSpawnPosition()
+    {
+        return Random.Range(0, spawnpoints.Length - 1);
+    }
+
+    private int getEnemyType()
+    {
+        int enemyType = Random.Range(0, enemyProbability);
+
+        if( enemyType <= 40)
+        {
+            return 0;
+        }
+        else if( enemyType <= 80)
+        {
+            return 1;
+        }
+        else
+        {
+            return 2;
+        }
     }
 }

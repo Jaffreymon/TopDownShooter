@@ -86,7 +86,7 @@ public class AIPath : AIBase {
 	/** Distance to the end point to consider the end of path to be reached.
 	 * When the end is within this distance then #OnTargetReached will be called and #TargetReached will return true.
 	 */
-	public float endReachedDistance = 0.2F;
+	public float endReachedDistance = 1F;
 
 	/** Draws detailed gizmos constantly in the scene view instead of only when the agent is selected and settings are being modified */
 	public bool alwaysDrawGizmos;
@@ -127,15 +127,16 @@ public class AIPath : AIBase {
 	 * \see #Init
 	 */
 	protected virtual void Start () {
-        target = GameObject.FindGameObjectWithTag("Player").transform;
 		startHasRun = true;
 		Init();
 	}
 
 	/** Called when the component is enabled */
 	protected virtual void OnEnable () {
-		// Make sure we receive callbacks when paths are calculated
-		seeker.pathCallback += OnPathComplete;
+        // Searches for player
+        target = GameObject.FindGameObjectWithTag("Player").transform;
+        // Make sure we receive callbacks when paths are calculated
+        seeker.pathCallback += OnPathComplete;
 		Init();
 	}
 

@@ -35,14 +35,15 @@ public class Gun : MonoBehaviour {
     public Transform spawn;
     public Transform shellEjectPoint;
     public Rigidbody shell;
-    [HideInInspector]
-    public GUI_HUD gui;
+    
+    private GUI_HUD gui;
     private LineRenderer tracer;
 
     private void Start()
     {
         secondsBetweenShots = 60 / rpm;
         audioSource = GetComponent<AudioSource>();
+        gui = GameObject.FindGameObjectWithTag("GUI").GetComponent<GUI_HUD>();
         if (GetComponent<LineRenderer>())
         {
             tracer = GetComponent<LineRenderer>();
