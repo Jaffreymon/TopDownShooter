@@ -22,6 +22,10 @@ public class Enemy : Entity {
     [SerializeField]
     private float attackSpeed;
 
+
+    [SerializeField]
+    private AudioClip[] attackSounds;
+    private AudioSource audioPlayer;
     private Player player;
     private GameManager GM;
     private AIPath aiPath;
@@ -31,6 +35,7 @@ public class Enemy : Entity {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         GM = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
         aiPath = GetComponent<AIPath>();
+        audioPlayer = GetComponent<AudioSource>();
     }
 
     /** Damage player if in collision radius
@@ -62,13 +67,14 @@ public class Enemy : Entity {
             if (sqrDistToPlayer < Mathf.Pow(attackRange, 2))
             {
                 nextAttackTime = Time.time + attackCooldown;
-                //StartCoroutine(Attack());
+                StartCoroutine(Attack());
             }
         }
     }
 
 
     IEnumerator Attack() {
+        // Pauses AIPath script to prevent conflict of pathfinding and attacking
         aiPath.canSearch = false;
 
         Vector3 origPosition = transform.position;
@@ -82,7 +88,9 @@ public class Enemy : Entity {
             // Curved lunged toward player's position
             float interpolation = (-Mathf.Pow(percent, 2) + percent) * 4;
             // Damage is done at peak of curve
-            if ( interpolation >= 0.99) { player.takeDamage(dealtDamage); }
+            if ( interpolation >= 0.99) {
+                enemyAttack();
+            }
 
             transform.position = Vector3.Lerp(origPosition, playerPosition, interpolation);
 
@@ -97,5 +105,14 @@ public class Enemy : Entity {
         player.AddExperience(expOnDeath);
         GM.destroyEnemy();
         base.Die();
+    }
+
+    private void enemyAttack()
+    {
+        if (player.getHealth() > 0) {
+            player.takeDamage(dealtDamage);
+        }
+        // Plays a random punching sound
+        audioPlayer.PlayOneShot(attackSounds[Random.Range(0, attackSounds.Length)]);
     }
 }

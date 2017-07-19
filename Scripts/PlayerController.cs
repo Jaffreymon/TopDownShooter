@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour {
     private int gunSlotNum = 0;
     private bool flashlightOn= false;
     private bool paused = false;
+    private bool playerIsDead = false;
 
     // Game Components
     public Transform handHold;
@@ -52,7 +53,7 @@ public class PlayerController : MonoBehaviour {
         }
 
         // Ignores input if game paused
-        if(paused) { return; }
+        if(paused || playerIsDead) { return; }
 
         ControlMouse();
 
@@ -165,5 +166,20 @@ public class PlayerController : MonoBehaviour {
     {
         paused = !paused;
         inGameMenu.pause();
+    }
+
+    // Alternate player's health status; controls will be disabled
+    public IEnumerator playerKilled()
+    {
+        playerIsDead = true;
+
+        // Slow motion death animation
+        Time.timeScale = 0.4f;
+        // Player collision ignored on death
+        Physics.IgnoreLayerCollision( LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Player") , false);
+        // TODO create apply force away from enemy
+
+        yield return new WaitForSeconds(2f);
+        Time.timeScale = 1f;
     }
 }

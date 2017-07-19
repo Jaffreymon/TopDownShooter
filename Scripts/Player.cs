@@ -9,16 +9,24 @@ public class Player : Entity {
 
     [SerializeField]
     private GUI_HUD gui;
+    [SerializeField]
+    private PlayerController playerController;
 
     void OnEnable()
     {
         gui = GameObject.FindGameObjectWithTag("GUI").GetComponent<GUI_HUD>();
+        playerController = GetComponent<PlayerController>();
         LevelUp();
     }
 
     void Update()
     {
         gui.SetHealth(this.getHealth());
+
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            addHealth(25);
+        }
     }
 
     public void AddExperience(float exp)
@@ -49,5 +57,11 @@ public class Player : Entity {
     public override void Die()
     {
         //TODO
+        /**
+         * Stop player controls
+         * Create game over screen
+         * Add force to knock player object away on death
+         */
+        StartCoroutine(playerController.playerKilled());
     }
 }

@@ -36,11 +36,6 @@ public class GUI_HUD : MonoBehaviour {
         ammoCountText.text = "Ammo: " + ammoInMag + "/" + maxMagAmmo;
     }
 
-    public void SetCurrGunName(string gunName)
-    {
-        
-    }
-
     public void SetHealth(float health)
     {
         healthCountText.text = "Health: " + health;

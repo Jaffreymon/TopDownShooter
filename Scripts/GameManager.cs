@@ -17,10 +17,13 @@ public class GameManager : MonoBehaviour {
     private const int baseEnemyProbability = 41;
     private int enemyProbability;
 
+    public Light testLight;
+
     public Text enemyCountHUD;
     private Player player;
 
     void OnEnable () {
+        testLight.enabled = false;
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         enemyProbability = baseEnemyProbability;
         StartCoroutine(initSpawnTime());

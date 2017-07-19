@@ -13,6 +13,7 @@ public class Entity : MonoBehaviour {
 
         if(health <= 0)
         {
+            health = 0;
             Die();
         }
     }
@@ -20,6 +21,11 @@ public class Entity : MonoBehaviour {
     public float getHealth()
     {
         return health;
+    }
+
+    protected void addHealth(float _heal)
+    {
+        health += _heal;
     }
 
     public virtual void Die()
