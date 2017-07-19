@@ -25,7 +25,7 @@ public class Player : Entity {
 
         if(Input.GetKeyDown(KeyCode.K))
         {
-            addHealth(25);
+            addHealth(-99);
         }
     }
 

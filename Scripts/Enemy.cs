@@ -111,6 +111,13 @@ public class Enemy : Entity {
     {
         if (player.getHealth() > 0) {
             player.takeDamage(dealtDamage);
+
+            if (player.getHealth() <= 0 ) {
+                Rigidbody playerBody = player.gameObject.AddComponent<Rigidbody>();
+                playerBody.mass = 2f;
+                playerBody.AddForce(transform.forward * 0.01f);
+
+            }
         }
         // Plays a random punching sound
         audioPlayer.PlayOneShot(attackSounds[Random.Range(0, attackSounds.Length)]);

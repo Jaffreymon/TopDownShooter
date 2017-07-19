@@ -180,6 +180,7 @@ public class PlayerController : MonoBehaviour {
         // TODO create apply force away from enemy
 
         yield return new WaitForSeconds(2f);
+        Destroy(GetComponent<Rigidbody>());
         Time.timeScale = 1f;
     }
 }
