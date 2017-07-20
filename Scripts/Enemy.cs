@@ -114,8 +114,9 @@ public class Enemy : Entity {
 
             if (player.getHealth() <= 0 ) {
                 Rigidbody playerBody = player.gameObject.AddComponent<Rigidbody>();
-                playerBody.mass = 2f;
-                playerBody.AddForce(transform.forward * 0.01f);
+                playerBody.mass = 100; playerBody.drag = 0.1f;
+                // Applies half the given force to lethal hit
+                playerBody.AddForce( transform.forward * 0.5f, ForceMode.Impulse);
 
             }
         }

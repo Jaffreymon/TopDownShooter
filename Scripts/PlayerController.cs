@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour {
     void Awake () {
         playerController = GetComponent<CharacterController>();
         inGameMenu = GetComponent<InGameMenu>();
+        gui = GameObject.FindWithTag("GUI").GetComponent<GUI_HUD>();
         cam = Camera.main;
         Cursor.visible = false;
         rotationSpeed = PlayerPrefs.GetFloat("RotationSensitivity");
@@ -47,7 +48,7 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame. Player controls go here
 	void Update () {
         // Player pauses game
-        if (Input.GetButtonDown("Pause"))
+        if (Input.GetButtonDown("Pause") && !playerIsDead)
         {
             pauseGame();
         }
@@ -177,10 +178,13 @@ public class PlayerController : MonoBehaviour {
         Time.timeScale = 0.4f;
         // Player collision ignored on death
         Physics.IgnoreLayerCollision( LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Player") , false);
-        // TODO create apply force away from enemy
 
+        // Death scene
         yield return new WaitForSeconds(2f);
         Destroy(GetComponent<Rigidbody>());
         Time.timeScale = 1f;
+
+        gui.DeathScreen();
+
     }
 }

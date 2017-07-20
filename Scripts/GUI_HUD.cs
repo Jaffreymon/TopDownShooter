@@ -16,6 +16,11 @@ public class GUI_HUD : MonoBehaviour {
     [SerializeField]
     private Text healthCountText;
 
+    [SerializeField]
+    private GameObject aliveHUD;
+    [SerializeField]
+    private GameObject deadScreen;
+
     public void SetPlayerExperience(float percentToLevel, int playerLevel)
     {
         playerLevelText.text = "Level: " + playerLevel;
@@ -39,5 +44,12 @@ public class GUI_HUD : MonoBehaviour {
     public void SetHealth(float health)
     {
         healthCountText.text = "Health: " + health;
+    }
+
+    public void DeathScreen()
+    {
+        Cursor.visible = true;
+        aliveHUD.SetActive(false);
+        deadScreen.SetActive(true);
     }
 }

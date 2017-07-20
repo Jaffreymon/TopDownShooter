@@ -65,11 +65,13 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    // Gets random spawn point on the map
     private int getSpawnPosition()
     {
         return Random.Range(0, spawnpoints.Length - 1);
     }
 
+    // Gets random enemy type to spawn
     private int getEnemyType()
     {
         int enemyType = Random.Range(0, enemyProbability);
