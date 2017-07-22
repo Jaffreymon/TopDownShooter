@@ -4,35 +4,48 @@ using UnityEngine;
 
 public class DayNightCycle : MonoBehaviour {
 
+    [SerializeField]
     private double cycleMins;
     private double cycleCalc;
+    [SerializeField]
     private float sunDimRate;
     private int dayCount;
     private bool currDay;
+
+    private const int circleRotation = 360;
+    private const float earthRotationY = 23f;
+    private float earthRotationZ = 90f;
 
     [SerializeField]
     private Light sun;
 
     // Use this for initialization
     void OnEnable () {
-        cycleMins = 7f;
-        sunDimRate = 0.1f;
-        cycleCalc = 0.1/cycleMins * -1;
+        // Default position as Earth sunrise
+        transform.rotation = Quaternion.Euler(0, earthRotationY, earthRotationZ);
+
+        cycleCalc = 0.1/cycleMins * 1;
+        sun.intensity = 0f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        transform.Rotate(0, 0, (float) -cycleCalc * Time.timeScale, Space.World);
+        // Light rotations
+        transform.Rotate(0, 0, ((earthRotationZ * (float) cycleCalc) % circleRotation)* Time.timeScale, Space.World);
 
-        // Day
-        if (0 <= transform.eulerAngles.z && transform.eulerAngles.z <= 40) 
+        // Day Phase start 80 deg starts sunrise
+        if (220f >=transform.rotation.eulerAngles.z && transform.rotation.eulerAngles.z >= 80f)
         {
-            sun.intensity = Mathf.Clamp(sun.intensity + (sunDimRate * Time.deltaTime), 0, 1);
+            sun.intensity = Mathf.Clamp01(sun.intensity + sunDimRate);
         }
-        // Night
-        else if (160 <= transform.eulerAngles.z && transform.eulerAngles.z <= 220)
+        // Night Phase start 240 deg starts sunset
+        else
         {
-            sun.intensity -= sunDimRate * Time.deltaTime;   
+            sun.intensity = Mathf.Clamp01(sun.intensity - sunDimRate);
         }
+        
     }
+
+
+
 }
