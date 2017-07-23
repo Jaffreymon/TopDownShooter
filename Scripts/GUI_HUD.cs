@@ -15,6 +15,8 @@ public class GUI_HUD : MonoBehaviour {
     private Text ammoCountText;
     [SerializeField]
     private Text healthCountText;
+    [SerializeField]
+    private Text dayCountText;
 
     [SerializeField]
     private GameObject aliveHUD;
@@ -44,6 +46,11 @@ public class GUI_HUD : MonoBehaviour {
     public void SetHealth(float health)
     {
         healthCountText.text = "Health: " + health;
+    }
+
+    public void SetDayCount(int _dayCount)
+    {
+        dayCountText.text = "Day: " + _dayCount;
     }
 
     public void DeathScreen()
