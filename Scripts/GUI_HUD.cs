@@ -17,11 +17,14 @@ public class GUI_HUD : MonoBehaviour {
     private Text healthCountText;
     [SerializeField]
     private Text dayCountText;
+    [SerializeField]
+    private Text daySurvivedText;
 
     [SerializeField]
     private GameObject aliveHUD;
     [SerializeField]
     private GameObject deadScreen;
+    private int lastDaySaved;
 
     public void SetPlayerExperience(float percentToLevel, int playerLevel)
     {
@@ -50,6 +53,7 @@ public class GUI_HUD : MonoBehaviour {
 
     public void SetDayCount(int _dayCount)
     {
+        lastDaySaved = _dayCount;
         dayCountText.text = "Day: " + _dayCount;
     }
 
@@ -57,6 +61,7 @@ public class GUI_HUD : MonoBehaviour {
     {
         Cursor.visible = true;
         aliveHUD.SetActive(false);
+        daySurvivedText.text = "Days Survived: " + lastDaySaved; 
         deadScreen.SetActive(true);
     }
 }

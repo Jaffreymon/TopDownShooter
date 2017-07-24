@@ -13,17 +13,18 @@ public class GameManager : MonoBehaviour {
     private float spawnTimeDelay;
     [SerializeField]
     private float maxEnemies;
+    private float daysToDoubleRate = 0.25f;
+
     private float currEnemies;
     private const int baseEnemyProbability = 41;
     private int enemyProbability;
 
-    public Light testLight;
+    public DayNightCycle dayManager;
 
     public Text enemyCountHUD;
     private Player player;
 
     void OnEnable () {
-        testLight.enabled = false;
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         enemyProbability = baseEnemyProbability;
         StartCoroutine(initSpawnTime());
@@ -60,8 +61,9 @@ public class GameManager : MonoBehaviour {
     {
         while( true )
         {
-            spawnEnemy();
+            //spawnEnemy();
             yield return new WaitForSeconds(spawnTimeDelay);
+            Debug.Log(spawnTimeDelay);
         }
     }
 
@@ -88,5 +90,20 @@ public class GameManager : MonoBehaviour {
         {
             return 2;
         }
+    }
+
+    public float getSpawnTime()
+    {
+        return spawnTimeDelay;
+    }
+
+    public float getSpawnByDayRate()
+    {
+        return daysToDoubleRate;
+    }
+
+    public void setSpawnTime(float _newSpawnDelay)
+    {
+        spawnTimeDelay = _newSpawnDelay;
     }
 }

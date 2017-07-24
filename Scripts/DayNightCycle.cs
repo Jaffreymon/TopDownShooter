@@ -20,6 +20,8 @@ public class DayNightCycle : MonoBehaviour {
     private Light sun;
     [SerializeField]
     private GUI_HUD gui;
+    [SerializeField]
+    private GameManager gm;
 
     // Use this for initialization
     void OnEnable () {
@@ -58,7 +60,12 @@ public class DayNightCycle : MonoBehaviour {
     private void updateDayCount()
     {
         gui.SetDayCount(++dayCount);
+        // Update to delay decrease in rates
+        gm.setSpawnTime(Mathf.Clamp(gm.getSpawnTime() - Mathf.Floor(gm.getSpawnByDayRate() * dayCount), 4f, 10f));
     }
 
-
+    public int getDaysPassed()
+    {
+        return dayCount;
+    }
 }
