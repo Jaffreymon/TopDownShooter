@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
+    // Interacted game components
     [SerializeField]
     private Transform[] spawnpoints;
     [SerializeField]
@@ -13,14 +14,16 @@ public class GameManager : MonoBehaviour {
     private float spawnTimeDelay;
     [SerializeField]
     private float maxEnemies;
-    private float daysToDoubleRate = 0.25f;
 
+    // Private game variables
     private float currEnemies;
     private const int baseEnemyProbability = 41;
     private int enemyProbability;
+    private float playerLevelModifier = 0.33f;
+    private float dayCountModifier = 0.25f;
 
+    // Static game components
     public DayNightCycle dayManager;
-
     public Text enemyCountHUD;
     private Player player;
 
@@ -61,9 +64,8 @@ public class GameManager : MonoBehaviour {
     {
         while( true )
         {
-            //spawnEnemy();
+            spawnEnemy();
             yield return new WaitForSeconds(spawnTimeDelay);
-            Debug.Log(spawnTimeDelay);
         }
     }
 
@@ -76,13 +78,18 @@ public class GameManager : MonoBehaviour {
     // Gets random enemy type to spawn
     private int getEnemyType()
     {
-        int enemyType = Random.Range(0, enemyProbability);
+        // Enemy type based on current probability, player level, and day count
+        int levelWeight =  Mathf.FloorToInt(player.getPlayerLevel() * playerLevelModifier);
+        int dayWeight = Mathf.FloorToInt(player.getPlayerLevel() * dayCountModifier);
+        int enemyType = Random.Range(0, enemyProbability + levelWeight + dayWeight);
+
+        Debug.Log("Out of " + (enemyProbability + levelWeight + dayWeight) + ", " + enemyType + " was chosen");
 
         if( enemyType <= 40)
         {
             return 0;
         }
-        else if( enemyType <= 80)
+        else if( enemyType <= 60)
         {
             return 1;
         }
@@ -95,11 +102,6 @@ public class GameManager : MonoBehaviour {
     public float getSpawnTime()
     {
         return spawnTimeDelay;
-    }
-
-    public float getSpawnByDayRate()
-    {
-        return daysToDoubleRate;
     }
 
     public void setSpawnTime(float _newSpawnDelay)
