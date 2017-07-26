@@ -48,7 +48,6 @@ public class Gun : MonoBehaviour {
         shootDist = _shootDist;
 
         secondsBetweenShots = 60 / rpm;
-        Debug.Log(secondsBetweenShots);
         currMagAmmo = maxMagAmmo;
     }
 

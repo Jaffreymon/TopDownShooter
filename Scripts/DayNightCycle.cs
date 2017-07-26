@@ -37,7 +37,8 @@ public class DayNightCycle : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         // Light rotations; preserves degrees within [-90, 270] due to sun's tilt
-        transform.Rotate(0, 0, ((earthRotationZ * (float) cycleCalc) % circleRotation) * Time.timeScale, Space.World);
+        float sunRotation = ((earthRotationZ * (float)cycleCalc) % circleRotation) * Time.timeScale;
+        transform.Rotate(0, 0, sunRotation, Space.World);
 
         // Day Phase start 80 deg starts sunrise
         if (220f >=transform.rotation.eulerAngles.z && transform.rotation.eulerAngles.z >= 80f)
@@ -60,9 +61,11 @@ public class DayNightCycle : MonoBehaviour {
 
     private void updateDayCount()
     {
-        gui.SetDayCount(++dayCount);
+        if (gui != null) {
+            gui.SetDayCount(++dayCount);
+        }
         // Update to delay decrease in rates
-        if ((dayCount % daysToDoubleSpawnRate) == 0) {
+        if ((dayCount % daysToDoubleSpawnRate) == 0 && gm != null) {
             // enemy spawn delay decreases by 1 sec every few days
             gm.setSpawnTime(Mathf.Clamp(gm.getSpawnTime() - 1, 4f, 10f));
         }

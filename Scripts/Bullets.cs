@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullets : MonoBehaviour {
 
-    private float lifeTime = 3f;
+    private float lifeTime = 0.5f;
     private float deathTime;
     private bool fading;
 
@@ -25,23 +25,20 @@ public class Bullets : MonoBehaviour {
     {
         while(true)
         {
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
             if (fading)
             {
                 // Bullet fades over time
                 fadePercent += Time.deltaTime;
                 mat.color = Color.Lerp(originalCol, Color.clear, fadePercent);
-                if (fadePercent >= 1)
+                if (fadePercent >= 0.9)
                 {
                     Destroy(gameObject);
                 }
             }
-            else
+            else if (Time.time > deathTime)
             {
-                if (Time.time > deathTime)
-                {
-                    fading = true;
-                }
+                fading = true;
             }
         }
     }
