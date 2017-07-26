@@ -79,32 +79,6 @@ public class PlayerController : MonoBehaviour {
             }
         }
 
-        // Detects gun switch via numpad
-        for(int idx = 0; idx < guns.Length; idx++)
-        {
-            if(Input.GetKeyDown(idx+1 + "") || Input.GetKeyDown("[" + (idx+1) + "]") && !currGun.isReloading())
-            {
-                gunSlotNum = idx;
-                EquipGun(idx);
-                break;
-            }
-        }
-
-        //Detects gun switch via mouse scroll
-        float mouseScrollMove = Input.GetAxis("MouseScroll");
-        if ( mouseScrollMove != 0 && !currGun.isReloading())
-        {
-            if(mouseScrollMove > 0 && gunSlotNum != (guns.Length - 1)) {
-                gunSlotNum = Mathf.Clamp(gunSlotNum + 1, 0, guns.Length - 1);
-                EquipGun(gunSlotNum);
-            }
-            else if(mouseScrollMove < 0 && gunSlotNum != 0)
-            {
-                gunSlotNum = Mathf.Clamp(gunSlotNum - 1, 0, guns.Length - 1);
-                EquipGun(gunSlotNum);
-            }
-        }
-
         //Detects flashlight on
         if (Input.GetButtonDown("Flashlight"))
         {

@@ -56,12 +56,6 @@ public class Player : Entity {
 
     public override void Die()
     {
-        //TODO
-        /**
-         * Stop player controls
-         * Create game over screen
-         * Add force to knock player object away on death
-         */
         StartCoroutine(playerController.playerKilled());
     }
 }

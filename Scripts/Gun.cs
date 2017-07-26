@@ -10,76 +10,54 @@ public class Gun : MonoBehaviour {
     // Gun variables
     public GunType gunType;
     [SerializeField]
-    private float rpm = 450f;
+    protected float rpm = 450f;
     [SerializeField]
-    private AudioClip[] gunSound;
+    protected AudioClip[] gunSound;
     [SerializeField]
-    private float gunDamage = 2f;
+    protected float gunDamage = 2f;
     [SerializeField]
-    private int maxMagAmmo;
-    [SerializeField]
-    private int currMagAmmo;
+    protected int maxMagAmmo;
+    protected int currMagAmmo;
 
     public float gunID;
     public LayerMask collisionMask;
-    private AudioSource audioSource;
-    private AudioClip shootSound;
-    private AudioClip reloadSound;
-    private bool reloading;
+    protected AudioSource audioSource;
+    protected AudioClip shootSound;
+    protected AudioClip reloadSound;
+    protected bool reloading;
 
     // Bullet variables
-    private float secondsBetweenShots;
-    private float nextPossibleShotTime;
+    protected float secondsBetweenShots;
+    protected float nextPossibleShotTime;
+    protected float shootDist;
 
     // Components
     public Transform spawn;
     public Transform shellEjectPoint;
     public Rigidbody shell;
     
-    private GUI_HUD gui;
-    private LineRenderer tracer;
+    protected GUI_HUD gui;
+    protected LineRenderer tracer;
 
-    private void Start()
+    protected void setGunStats(float _gunDamage, int _maxAmmo, float _rpm, GunType _gunType, float _shootDist)
     {
+        gunDamage = _gunDamage;
+        maxMagAmmo = _maxAmmo;
+        rpm = _rpm;
+        gunType = _gunType;
+        shootDist = _shootDist;
+
         secondsBetweenShots = 60 / rpm;
-        audioSource = GetComponent<AudioSource>();
-        gui = GameObject.FindGameObjectWithTag("GUI").GetComponent<GUI_HUD>();
-        if (GetComponent<LineRenderer>())
-        {
-            tracer = GetComponent<LineRenderer>();
-        }
-
-        if (gui)
-        {
-            gui.SetAmmoCount(currMagAmmo, maxMagAmmo);
-        }
-
-        // Index 0 shoot sound
-        shootSound = gunSound[0];
-
-        // Index 1 reload sound
-        reloadSound = gunSound[1];
+        Debug.Log(secondsBetweenShots);
+        currMagAmmo = maxMagAmmo;
     }
 
 
-	public void Shoot()
+	public virtual void Shoot()
     {
         if (canShoot())
         {
-            Ray ray = new Ray(spawn.position, spawn.forward);
-            RaycastHit hit;
-
-            float shootDist = 20f;
-
-            if (Physics.Raycast(ray, out hit, shootDist, collisionMask))
-            {
-                shootDist = hit.distance;
-
-                if(hit.collider.GetComponent<Entity>())
-                {
-                    hit.collider.GetComponent<Entity>().takeDamage(gunDamage);
-                }
-            }
+            shootBullet( spawn.forward, shootDist);
 
             nextPossibleShotTime = Time.time + secondsBetweenShots;
             currMagAmmo--;
@@ -92,11 +70,6 @@ public class Gun : MonoBehaviour {
             //Play gun shoot sound
             audioSource.clip = shootSound;
             audioSource.Play();
-
-            if(tracer)
-            {
-                StartCoroutine("RenderTracer", ray.direction * shootDist);
-            }
 
             Rigidbody newShell = Instantiate(shell, shellEjectPoint.position, Quaternion.identity) as Rigidbody;
             newShell.AddForce(shellEjectPoint.forward * Random.Range(100f, 150f) + spawn.forward * Random.Range(-5f,5f));
@@ -111,7 +84,7 @@ public class Gun : MonoBehaviour {
         }
     }
 
-    private bool canShoot() {
+    protected bool canShoot() {
         bool canShoot = true;
         if(Time.time < nextPossibleShotTime || (0 >= currMagAmmo) || (reloading))
         {
@@ -138,6 +111,28 @@ public class Gun : MonoBehaviour {
     public void finishReload()
     {
         StartCoroutine(ReloadTime());
+    }
+
+    // Shoots a single straight ray 
+    public virtual void shootBullet(Vector3 _bulletDir, float shootDist)
+    {
+        Ray ray = new Ray(spawn.position, _bulletDir);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, shootDist, collisionMask))
+        {
+            shootDist = hit.distance;
+
+            if (hit.collider.GetComponent<Entity>())
+            {
+                hit.collider.GetComponent<Entity>().takeDamage(gunDamage);
+            }
+        }
+
+        if (tracer)
+        {
+            StartCoroutine("RenderTracer", ray.direction * shootDist);
+        }
     }
     
     IEnumerator RenderTracer(Vector3 hitPoint)

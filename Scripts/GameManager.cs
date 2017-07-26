@@ -83,8 +83,6 @@ public class GameManager : MonoBehaviour {
         int dayWeight = Mathf.FloorToInt(player.getPlayerLevel() * dayCountModifier);
         int enemyType = Random.Range(0, enemyProbability + levelWeight + dayWeight);
 
-        Debug.Log("Out of " + (enemyProbability + levelWeight + dayWeight) + ", " + enemyType + " was chosen");
-
         if( enemyType <= 40)
         {
             return 0;

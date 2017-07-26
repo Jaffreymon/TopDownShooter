@@ -10,7 +10,7 @@ public class DayNightCycle : MonoBehaviour {
     [SerializeField]
     private float sunDimRate;
     private int dayCount = 0;
-    private int daysToDoubleSpawnRate = 4;
+    private int daysToDoubleSpawnRate = 2;
     private bool currDay = false;
 
     private const int circleRotation = 360;
@@ -63,7 +63,7 @@ public class DayNightCycle : MonoBehaviour {
         gui.SetDayCount(++dayCount);
         // Update to delay decrease in rates
         if ((dayCount % daysToDoubleSpawnRate) == 0) {
-            // Every 4 days enemy spawn delay decreases by 1 sec
+            // enemy spawn delay decreases by 1 sec every few days
             gm.setSpawnTime(Mathf.Clamp(gm.getSpawnTime() - 1, 4f, 10f));
         }
     }
