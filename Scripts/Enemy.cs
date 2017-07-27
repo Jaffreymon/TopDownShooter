@@ -27,13 +27,11 @@ public class Enemy : Entity {
     private AudioClip[] attackSounds;
     private AudioSource audioPlayer;
     private Player player;
-    private GameManager GM;
     private AIPath aiPath;
 
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-        GM = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
         aiPath = GetComponent<AIPath>();
         audioPlayer = GetComponent<AudioSource>();
     }
@@ -103,7 +101,6 @@ public class Enemy : Entity {
     public override void Die()
     {
         player.AddExperience(expOnDeath);
-        GM.destroyEnemy();
         base.Die();
     }
 

@@ -14,9 +14,10 @@ public class GameManager : MonoBehaviour {
     private float spawnTimeDelay;
     [SerializeField]
     private float maxEnemies;
+    [SerializeField]
+    private Transform enemyList;
 
     // Private game variables
-    private float currEnemies;
     private const int baseEnemyProbability = 41;
     private int enemyProbability;
     private float playerLevelModifier = 0.33f;
@@ -40,24 +41,19 @@ public class GameManager : MonoBehaviour {
 
     private void updateEnemyCount()
     {
-        enemyCountHUD.text = "Current Enemies: " + currEnemies;
+        enemyCountHUD.text = "Current Enemies: " + enemyList.childCount;
     }
 
     void spawnEnemy()
     {
-        if (maxEnemies + player.getPlayerLevel() > currEnemies)
+        if (maxEnemies + player.getPlayerLevel() > enemyList.childCount)
         {
             int spawnPointPos = getSpawnPosition();
             int enemyType = getEnemyType();
 
-            Instantiate(enemies[enemyType], spawnpoints[spawnPointPos].position, spawnpoints[spawnPointPos].rotation);
-            currEnemies++;
+            GameObject freshSpawn = Instantiate(enemies[enemyType], spawnpoints[spawnPointPos].position, spawnpoints[spawnPointPos].rotation);
+            freshSpawn.transform.SetParent(enemyList);
         }
-    }
-
-    public void destroyEnemy()
-    {
-        currEnemies--;
     }
 
     IEnumerator initSpawnTime()

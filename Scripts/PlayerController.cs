@@ -17,7 +17,6 @@ public class PlayerController : MonoBehaviour {
     // System variables
     private Quaternion targetRotation;
     private Vector3 currVelocityModify;
-    private int gunSlotNum = 0;
     private bool flashlightOn= false;
     private bool paused = false;
     private bool playerIsDead = false;

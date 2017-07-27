@@ -82,14 +82,16 @@ public class Shotgun : Gun {
     {
         RaycastHit hit;
 
+        //Debug.DrawRay(_ray.origin, _ray.direction * _shootDist, Color.red, 10f);
+
         if (Physics.Raycast(_ray, out hit, _shootDist, collisionMask))
         {
             shootDist = hit.distance;
-            //Debug.DrawRay(_ray.origin, _ray.direction * _shootDist, Color.red, 10f);
             if (hit.collider.GetComponent<Entity>())
             {
                 hit.collider.GetComponent<Entity>().takeDamage(gunDamage);
             }
         }
+
     }
 }
