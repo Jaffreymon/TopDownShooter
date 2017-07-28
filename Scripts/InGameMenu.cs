@@ -36,7 +36,14 @@ public class InGameMenu : MonoBehaviour {
 
     public void StartLevel(string _levelName)
     {
-        SceneManager.LoadScene(_levelName);
+        if (_levelName == "Restart")
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+        else
+        {
+            SceneManager.LoadScene(_levelName);
+        }
     }
 
     public void QuitApp()

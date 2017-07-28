@@ -33,6 +33,11 @@ public class Shotgun : Gun {
         reloadSound = gunSound[1];
     }
 
+    private void Update()
+    {
+        //Debug.Log(shotgunShootDist);
+    }
+
     public override void Shoot()
     {
         if (canShoot())
@@ -53,6 +58,8 @@ public class Shotgun : Gun {
         // Left Angled pellet
         Ray leftRay = new Ray(spawn.position, Quaternion.Euler(0, -am, 0) * straightRay.direction);
 
+        Debug.Log("In Shotgun:shootBullet " + shootDist);
+
         checkRayCollision(straightRay, shootDist);
         checkRayCollision(rightRay, shootDist);
         checkRayCollision(leftRay, shootDist);
@@ -71,12 +78,10 @@ public class Shotgun : Gun {
 
         if (Physics.Raycast(_ray, out hit, _shootDist, collisionMask))
         {
-            shootDist = hit.distance;
             if (hit.collider.GetComponent<Entity>())
             {
                 hit.collider.GetComponent<Entity>().takeDamage(gunDamage);
             }
         }
-
     }
 }
