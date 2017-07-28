@@ -39,7 +39,7 @@ public class MainMenu : MonoBehaviour {
         }
     }
 
-    public void StartLevel(string _levelName)
+    public void loadLevel(string _levelName)
     {
         SceneManager.LoadScene(_levelName);
     }

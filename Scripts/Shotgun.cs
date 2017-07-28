@@ -58,8 +58,6 @@ public class Shotgun : Gun {
         // Left Angled pellet
         Ray leftRay = new Ray(spawn.position, Quaternion.Euler(0, -am, 0) * straightRay.direction);
 
-        Debug.Log("In Shotgun:shootBullet " + shootDist);
-
         checkRayCollision(straightRay, shootDist);
         checkRayCollision(rightRay, shootDist);
         checkRayCollision(leftRay, shootDist);

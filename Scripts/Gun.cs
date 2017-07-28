@@ -103,7 +103,6 @@ public class Gun : MonoBehaviour {
         Ray ray = new Ray(spawn.position, _bulletDir);
         RaycastHit hit;
 
-        Debug.Log("In Gun:shootBullet " + shootDist);
         if (Physics.Raycast(ray, out hit, shootDist, collisionMask))
         {
             shootDist = hit.distance;
@@ -122,7 +121,6 @@ public class Gun : MonoBehaviour {
 
     public virtual void fireBullet()
     {
-        Debug.Log("In Gun:Firebullet " + shootDist);
         shootBullet(spawn.forward, shootDist);
 
         nextPossibleShotTime = Time.time + secondsBetweenShots;

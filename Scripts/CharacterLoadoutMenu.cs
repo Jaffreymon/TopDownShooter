@@ -10,13 +10,22 @@ public class CharacterLoadoutMenu : MonoBehaviour {
     private List<GameObject> loadoutLineup;
     [SerializeField]
     private Text gunNameHolder;
+    [SerializeField]
+    private Slider loadingScreenBar;
+    [SerializeField]
+    private GameObject loadoutMenu;
+    [SerializeField]
+    private GameObject loadingScreen;
 
     private Transform placeHolder;
     private int idx;
-    public float rotationPace;
+    private float rotationPace;
 
-	// Use this for initialization
-	void Start () {
+    private const float unityProgressCap = 0.9f;
+
+    // Use this for initialization
+    void Start () {
+        rotationPace = 1f;
         placeHolder = GetComponent<Transform>();
 
         GameObject[] loadouts = Resources.LoadAll<GameObject>("Loadouts");
@@ -90,9 +99,36 @@ public class CharacterLoadoutMenu : MonoBehaviour {
 
     }
 
+    // Loading game scene
     public void readyLevel(string _levelName)
     {
         PlayerPrefs.SetInt("playerLoadout",idx);
+        //SceneManager.LoadScene(_levelName);
+        StartCoroutine(loadAsync(_levelName));
+    }
+
+    // Loading home scene
+    public void loadLevel(string _levelName)
+    {
         SceneManager.LoadScene(_levelName);
+    }
+
+    // Async load game scene to allow UI to display progression of setting up the scene
+    IEnumerator loadAsync(string _levelName)
+    {
+        rotationPace = 0f;
+        loadoutMenu.SetActive(false);
+
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(_levelName);
+
+        loadingScreen.SetActive(true);
+
+        while(!asyncLoad.isDone)
+        {
+            float progress = Mathf.Clamp01(asyncLoad.progress / unityProgressCap);
+            loadingScreenBar.value = progress;
+
+            yield return null;
+        }
     }
 }

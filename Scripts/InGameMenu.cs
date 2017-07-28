@@ -34,7 +34,7 @@ public class InGameMenu : MonoBehaviour {
         return inOptions;
     }
 
-    public void StartLevel(string _levelName)
+    public void loadLevel(string _levelName)
     {
         if (_levelName == "Restart")
         {

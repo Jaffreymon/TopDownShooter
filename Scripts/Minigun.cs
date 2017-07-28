@@ -13,9 +13,9 @@ public class Minigun : Gun {
     [SerializeField]
     private Animator gunAnim;
 
-    private bool isShooting = false;
-    private bool isBarrelSpinning = false;
-    private float barrelSpinTime = 1f;
+    //private bool isShooting = false;
+    //private bool isBarrelSpinning = false;
+    //private float barrelSpinTime = 1f;
 
     private void Start()
     {
@@ -84,8 +84,10 @@ public class Minigun : Gun {
     // Add minigun barrel revving
     IEnumerator minigunShoot()
     {
-        yield return new WaitForSeconds(barrelSpinTime);
-        isBarrelSpinning = false;
-        isShooting = true;
+        //yield return new WaitForSeconds(barrelSpinTime);
+        //isBarrelSpinning = false;
+        //isShooting = true;
+
+        return null;
     }
 }
