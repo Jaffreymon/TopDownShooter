@@ -37,22 +37,7 @@ public class Shotgun : Gun {
     {
         if (canShoot())
         {
-            shootBullet(spawn.forward, shotgunShootDist);
-
-            nextPossibleShotTime = Time.time + secondsBetweenShots;
-            currMagAmmo--;
-
-            if (gui)
-            {
-                gui.SetAmmoCount(currMagAmmo, maxMagAmmo);
-            }
-
-            //Play gun shoot sound
-            audioSource.clip = shootSound;
-            audioSource.Play();
-
-            Rigidbody newShell = Instantiate(shell, shellEjectPoint.position, Quaternion.identity) as Rigidbody;
-            newShell.AddForce(shellEjectPoint.forward * Random.Range(100f, 150f) + spawn.forward * Random.Range(-5f, 5f));
+            fireBullet();
         }
     }
 

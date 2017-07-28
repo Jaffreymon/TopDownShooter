@@ -10,6 +10,13 @@ public class Minigun : Gun {
     private float minigunShootDist = 20f;
     private GunType minigunGunType = GunType.Auto;
 
+    [SerializeField]
+    private Animator gunAnim;
+
+    private bool isShooting = false;
+    private bool isBarrelSpinning = false;
+    private float barrelSpinTime = 1f;
+
     private void Start()
     {
         setGunStats(minigunDamage, minigunMaxAmmo, minigunRPM, minigunGunType, minigunShootDist);
@@ -31,5 +38,54 @@ public class Minigun : Gun {
 
         // Index 1 reload sound
         reloadSound = gunSound[1];
+    }
+
+    public override void Shoot()
+    {
+        if (canShoot())
+        {
+            // Minigun barrel spurrs before shooting
+            /* TODO add realistic spinning to minigun
+            if(!isBarrelSpinning)
+            {
+                StartCoroutine("minigunShoot");
+            }
+            else if (isShooting)
+            {
+                fireBullet();
+            }
+            */
+
+            fireBullet();
+        }
+    }
+
+    public override void fireBullet()
+    {
+        shootBullet(spawn.forward, shootDist);
+
+        nextPossibleShotTime = Time.time + secondsBetweenShots;
+        currMagAmmo--;
+
+        if (gui)
+        {
+            gui.SetAmmoCount(currMagAmmo, maxMagAmmo);
+        }
+
+        //Play gun shoot sound
+        audioSource.clip = shootSound;
+        audioSource.Play();
+
+        Rigidbody newShell = Instantiate(shell, shellEjectPoint.position, Quaternion.identity) as Rigidbody;
+        newShell.AddForce(shellEjectPoint.forward * Random.Range(100f, 150f) + spawn.forward * Random.Range(-5f, 5f));
+    }
+
+
+    // Add minigun barrel revving
+    IEnumerator minigunShoot()
+    {
+        yield return new WaitForSeconds(barrelSpinTime);
+        isBarrelSpinning = false;
+        isShooting = true;
     }
 }

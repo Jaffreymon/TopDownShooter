@@ -41,8 +41,9 @@ public class PlayerController : MonoBehaviour {
         Cursor.visible = false;
         rotationSpeed = PlayerPrefs.GetFloat("RotationSensitivity");
 
-        EquipGun(PlayerPrefs.GetInt("playerLoadout"));
-	}
+        //EquipGun(PlayerPrefs.GetInt("playerLoadout"));
+        EquipGun(0);
+    }
 	
 	// Update is called once per frame. Player controls go here
 	void Update () {
