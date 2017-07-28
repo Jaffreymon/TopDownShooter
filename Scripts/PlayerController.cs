@@ -18,7 +18,6 @@ public class PlayerController : MonoBehaviour {
     private Quaternion targetRotation;
     private Vector3 currVelocityModify;
     private bool flashlightOn= false;
-    private bool paused = false;
     private bool playerIsDead = false;
 
     // Game Components
@@ -41,8 +40,7 @@ public class PlayerController : MonoBehaviour {
         Cursor.visible = false;
         rotationSpeed = PlayerPrefs.GetFloat("RotationSensitivity");
 
-        //EquipGun(PlayerPrefs.GetInt("playerLoadout"));
-        EquipGun(0);
+        EquipGun(PlayerPrefs.GetInt("playerLoadout"));
     }
 	
 	// Update is called once per frame. Player controls go here
@@ -50,11 +48,11 @@ public class PlayerController : MonoBehaviour {
         // Player pauses game
         if (Input.GetButtonDown("Pause") && !playerIsDead)
         {
-            pauseGame();
+            inGameMenu.pause();
         }
 
         // Ignores input if game paused
-        if(paused || playerIsDead) { return; }
+        if(inGameMenu.isPaused() || playerIsDead) { return; }
 
         ControlMouse();
 
@@ -135,12 +133,6 @@ public class PlayerController : MonoBehaviour {
         motion += Vector3.up * -8;
 
         playerController.Move(motion * Time.deltaTime);
-    }
-
-    public void pauseGame()
-    {
-        paused = !paused;
-        inGameMenu.pause();
     }
 
     // Alternate player's health status; controls will be disabled
