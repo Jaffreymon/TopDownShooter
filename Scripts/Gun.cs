@@ -25,6 +25,7 @@ public class Gun : MonoBehaviour {
     protected AudioClip shootSound;
     protected AudioClip reloadSound;
     protected bool reloading;
+    protected bool isShooting = false;
 
     // Bullet variables
     protected float secondsBetweenShots;
@@ -56,6 +57,7 @@ public class Gun : MonoBehaviour {
     {
         if (canShoot())
         {
+            toggleShooting(true);
             fireBullet();
         }
     }
@@ -67,6 +69,15 @@ public class Gun : MonoBehaviour {
             Shoot();
         }
     }
+
+    // Checks if shooting is active, if not then boolean becomes false
+    public bool checkIsShooting()
+    {
+        return isShooting;
+    }
+    
+    // Toggles isShooting
+    public void toggleShooting(bool _set) { isShooting = _set;}
 
     protected bool canShoot() {
         bool canShoot = true;
