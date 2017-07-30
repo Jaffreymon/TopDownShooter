@@ -66,6 +66,11 @@ public class Minigun : Gun {
         // Resets the window to stop revving when shooting
         else
         {
+            /* Minigun barrel spurrs before shooting */
+            if (!isBarrelSpinning)
+            {
+                StartCoroutine(minigunRevUp());
+            }
             nextTimeBarrelIdle = Mathf.Infinity;
         }
     }
@@ -74,14 +79,8 @@ public class Minigun : Gun {
     {
         if (canShoot())
         {
-            /* Minigun barrel spurrs before shooting */
-            // TODO add realistic spinning to minigun
-            if(!isBarrelSpinning)
-            {
-                StartCoroutine(minigunRevUp());
-            }
             // Bullets only come out if barrel is spinning
-            else if (checkIsShooting())
+            if (checkIsShooting())
             {
                 fireBullet();
             }
