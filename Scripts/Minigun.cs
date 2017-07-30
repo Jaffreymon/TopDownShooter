@@ -15,7 +15,6 @@ public class Minigun : Gun {
 
     private bool isBarrelSpinning = false;
     private float barrelSpinTime = 1f;
-    [SerializeField]
     private float nextTimeBarrelIdle = Mathf.Infinity;
 
     private void Start()
@@ -46,7 +45,6 @@ public class Minigun : Gun {
         // Track when player stops firing the gunf
         if (!Input.GetButton("Shoot"))
         {
-            // 
             if (nextTimeBarrelIdle != Mathf.Infinity)
             {
                 // If window to shoot is past, barrel stops and must be revved up again
@@ -54,6 +52,7 @@ public class Minigun : Gun {
                 {
                     // Fade spin and sound
                     nextTimeBarrelIdle = Mathf.Infinity;
+                    gunAnim.SetBool("Spinning", false);
                     toggleShooting(false);
                     toggleBarrelRev(false);
                 }
@@ -116,9 +115,9 @@ public class Minigun : Gun {
     {
         toggleBarrelRev(true);
         // Add sounds and barrel spinning animation
+        gunAnim.SetBool("Spinning",true);
+        
         yield return new WaitForSeconds(barrelSpinTime);
         toggleShooting(true);
-
-        yield return null;
     }
 }
