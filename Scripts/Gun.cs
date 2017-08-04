@@ -18,12 +18,14 @@ public class Gun : MonoBehaviour {
     [SerializeField]
     protected int maxMagAmmo;
     protected int currMagAmmo;
+    protected bool skillUsed;
 
-    public float gunID;
     public LayerMask collisionMask;
     protected AudioSource audioSource;
     protected AudioClip shootSound;
     protected AudioClip reloadSound;
+    protected float maxVolume = 0.4f;
+
     protected bool reloading;
     protected bool isShooting = false;
 
@@ -51,7 +53,6 @@ public class Gun : MonoBehaviour {
         secondsBetweenShots = 60 / rpm;
         currMagAmmo = maxMagAmmo;
     }
-
 
 	public virtual void Shoot()
     {
@@ -149,7 +150,11 @@ public class Gun : MonoBehaviour {
         Rigidbody newShell = Instantiate(shell, shellEjectPoint.position, Quaternion.identity) as Rigidbody;
         newShell.AddForce(shellEjectPoint.forward * Random.Range(100f, 150f) + spawn.forward * Random.Range(-5f, 5f));
     }
-    
+
+    public bool checkSkillUsed() { return skillUsed; }
+
+    public void toggleSkill() { skillUsed = !skillUsed; }
+
     IEnumerator RenderTracer(Vector3 hitPoint)
     {
         tracer.enabled = true;

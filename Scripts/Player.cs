@@ -7,6 +7,9 @@ public class Player : Entity {
     private float currExperience;
     private float nextExperienceLvl;
 
+    public string characterName;
+    [SerializeField]
+    private CharAbility ability;
     [SerializeField]
     private GUI_HUD gui;
     [SerializeField]
@@ -21,12 +24,12 @@ public class Player : Entity {
 
     void Update()
     {
-        gui.SetHealth(this.getHealth());
-
-        if(Input.GetKeyDown(KeyCode.K))
+        if (Input.GetButtonDown("Ability"))
         {
-            addHealth(-99);
+            activateAbility();
         }
+
+        gui.SetHealth(getHealth());
     }
 
     public void AddExperience(float exp)
@@ -58,4 +61,10 @@ public class Player : Entity {
     {
         StartCoroutine(playerController.playerKilled());
     }
+
+    public void setName(string _name) { characterName = _name; }
+
+    public string getName() { return characterName; }
+
+    public void activateAbility() { ability.activate(); }
 }

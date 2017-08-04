@@ -10,6 +10,10 @@ public class Shotgun : Gun {
     private float shotgunShootDist = 6f;
     private GunType shotgunGunType = GunType.Semi;
 
+    private float defaultEndSpread = 3f;
+    private float skillEndSpread = 5f;
+
+
     private void Start()
     {
         setGunStats(shotgunDamage, shotgunMaxAmmo, shotgunRPM, shotgunGunType, shotgunShootDist);
@@ -33,11 +37,6 @@ public class Shotgun : Gun {
         reloadSound = gunSound[1];
     }
 
-    private void Update()
-    {
-        //Debug.Log(shotgunShootDist);
-    }
-
     public override void Shoot()
     {
         if (canShoot())
@@ -58,12 +57,22 @@ public class Shotgun : Gun {
         // Left Angled pellet
         Ray leftRay = new Ray(spawn.position, Quaternion.Euler(0, -am, 0) * straightRay.direction);
 
+        if (checkSkillUsed())
+        {
+            Ray skillRightRay = new Ray(spawn.position, Quaternion.Euler(0, 2 * am, 0) * straightRay.direction);
+            Ray skillLeftRay = new Ray(spawn.position, Quaternion.Euler(0, -2 * am, 0) * straightRay.direction);
+
+            checkRayCollision(skillRightRay, shootDist);
+            checkRayCollision(skillLeftRay, shootDist);
+        }
+
         checkRayCollision(straightRay, shootDist);
         checkRayCollision(rightRay, shootDist);
         checkRayCollision(leftRay, shootDist);
 
         if (tracer)
         {
+            toggleTracerSpread();
             StartCoroutine("RenderTracer", straightRay.direction * shootDist);
         }
     }
@@ -81,5 +90,10 @@ public class Shotgun : Gun {
                 hit.collider.GetComponent<Entity>().takeDamage(gunDamage);
             }
         }
+    }
+
+    private void toggleTracerSpread()
+    {
+        tracer.endWidth = (checkSkillUsed() == true) ? skillEndSpread : defaultEndSpread;
     }
 }

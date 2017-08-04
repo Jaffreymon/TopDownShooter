@@ -26,10 +26,14 @@ public class GameManager : MonoBehaviour {
     // Static game components
     public DayNightCycle dayManager;
     public Text enemyCountHUD;
+    [SerializeField]
+    private Player[] playerList;
     private Player player;
 
     void OnEnable () {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        //PlayerPrefs.GetInt("playerLoadout")
+        // Spawns the player into the game based on menu selection; 
+        player = Instantiate(playerList[PlayerPrefs.GetInt("playerLoadout")], new Vector3(0f, 1f, 0f), Quaternion.Euler(0f, 0f, 0f) );
         enemyProbability = baseEnemyProbability;
         StartCoroutine(initSpawnTime());
     }
