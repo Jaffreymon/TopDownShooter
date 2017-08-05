@@ -7,14 +7,15 @@ public class ScheatAbility : CharAbility
     private Minigun minigun;
     private float lifeTime = 10f;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         minigun = GetComponentInChildren<Minigun>();
     }
 
     public override void activate()
     {
-        if (isCooldownOver())
+        if (isSkillActive())
         {
             StartCoroutine(activateSkill());
         }
@@ -24,14 +25,15 @@ public class ScheatAbility : CharAbility
     {
         assignCoolDown();
         // Activate skill
+        //TODO activate skill music
         minigun.toggleSkill();
-        //Debug.Log("Start time: " + Time.time);
 
         // Skill is up for some time
         yield return new WaitForSeconds(lifeTime);
 
-        //Debug.Log("End time: " + Time.time);
         // Deactivate skill
+        //TODO deactivate skill music
         minigun.toggleSkill();
+        getSkillUI().toggleUI(false);
     }
 }

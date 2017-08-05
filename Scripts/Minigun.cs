@@ -10,6 +10,9 @@ public class Minigun : Gun {
     private float minigunShootDist = 20f;
     private GunType minigunGunType = GunType.Auto;
 
+    private float defaultEndSpread = 0.5f;
+    private float skillEndSpread = 3f;
+
     [SerializeField]
     private Animator gunAnim;
 
@@ -124,9 +127,10 @@ public class Minigun : Gun {
 
         if (checkSkillUsed())
         {
-            float am = 12f;
-            Ray skillRightRay = new Ray(spawn.position, Quaternion.Euler(0, am, 0) * straightRay.direction);
-            Ray skillLeftRay = new Ray(spawn.position, Quaternion.Euler(0, -am, 0) * straightRay.direction);
+            
+            float adjustedAngle = 4f;
+            Ray skillRightRay = new Ray(spawn.position, Quaternion.Euler(0, adjustedAngle, 0) * straightRay.direction);
+            Ray skillLeftRay = new Ray(spawn.position, Quaternion.Euler(0, -adjustedAngle, 0) * straightRay.direction);
 
             checkRayCollision(skillRightRay, shootDist);
             checkRayCollision(skillLeftRay, shootDist);
@@ -139,7 +143,9 @@ public class Minigun : Gun {
 
         if (tracer)
         {
+            toggleTracerSpread();
             StartCoroutine("RenderTracer", straightRay.direction * shootDist);
+
         }
     }
 
@@ -147,7 +153,7 @@ public class Minigun : Gun {
     {
         RaycastHit hit;
 
-        //Debug.DrawRay(_ray.origin, _ray.direction * _shootDist, Color.red, 10f);
+        Debug.DrawRay(_ray.origin, _ray.direction * _shootDist, Color.red, 10f);
 
         if (Physics.Raycast(_ray, out hit, _shootDist, collisionMask))
         {
@@ -173,5 +179,11 @@ public class Minigun : Gun {
         
         yield return new WaitForSeconds(barrelSpinTime);
         toggleShooting(true);
+    }
+
+    // if skill is in use, tracer widens to show wider spread
+    private void toggleTracerSpread()
+    {
+        tracer.endWidth = (checkSkillUsed() == true) ? skillEndSpread : defaultEndSpread;
     }
 }

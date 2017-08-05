@@ -6,14 +6,15 @@ public class BastetAbility : CharAbility {
     private Shotgun shotgun;
     private float lifeTime = 10f;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         shotgun = GetComponentInChildren<Shotgun>();
     }
 
     public override void activate()
     {
-        if (isCooldownOver()) {
+        if (isSkillActive()) {
             StartCoroutine(activateSkill());
         }
     }
@@ -22,14 +23,15 @@ public class BastetAbility : CharAbility {
     {
         assignCoolDown();
         // Activate skill
+        //TODO activate skill music
         shotgun.toggleSkill();
-        //Debug.Log("Start time: " + Time.time);
 
         // Skill is up for some time
         yield return new WaitForSeconds(lifeTime);
-        
-        //Debug.Log("End time: " + Time.time);
+
         // Deactivate skill
+        //TODO deactivate skill music
         shotgun.toggleSkill();
+        getSkillUI().toggleUI(false);
     }
 }

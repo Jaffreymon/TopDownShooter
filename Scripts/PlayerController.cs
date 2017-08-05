@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour {
     // Use this for initialization
     void Awake () {
         playerController = GetComponent<CharacterController>();
-        inGameMenu = GetComponent<InGameMenu>();
+        inGameMenu = GameObject.FindGameObjectWithTag("InGameMenu").GetComponent<InGameMenu>();
         gui = GameObject.FindWithTag("GUI").GetComponent<GUI_HUD>();
         cam = Camera.main;
         Cursor.visible = false;

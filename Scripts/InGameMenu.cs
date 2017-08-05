@@ -26,7 +26,6 @@ public class InGameMenu : MonoBehaviour {
         Time.timeScale = ( inOptions = !inOptions) ? 0 : 1;
         Cursor.visible = inOptions;
         gameMenu.SetActive(inOptions);
-        Debug.Log(inOptions);
     }
 
     public bool isPaused()

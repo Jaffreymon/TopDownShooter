@@ -48,19 +48,19 @@ public class Shotgun : Gun {
     // Shoots out 3 rays instead of 1
     public override void shootBullet(Vector3 _bulletDir, float shootDist)
     {
-        float am = 12f;
+        float adjustAngle = 12f;
 
         // Straight pellet
         Ray straightRay = new Ray(spawn.position, _bulletDir * shootDist);
         // Right Angled pellet
-        Ray rightRay = new Ray(spawn.position, Quaternion.Euler(0, am, 0) * straightRay.direction);
+        Ray rightRay = new Ray(spawn.position, Quaternion.Euler(0, adjustAngle, 0) * straightRay.direction);
         // Left Angled pellet
-        Ray leftRay = new Ray(spawn.position, Quaternion.Euler(0, -am, 0) * straightRay.direction);
+        Ray leftRay = new Ray(spawn.position, Quaternion.Euler(0, -adjustAngle, 0) * straightRay.direction);
 
         if (checkSkillUsed())
         {
-            Ray skillRightRay = new Ray(spawn.position, Quaternion.Euler(0, 2 * am, 0) * straightRay.direction);
-            Ray skillLeftRay = new Ray(spawn.position, Quaternion.Euler(0, -2 * am, 0) * straightRay.direction);
+            Ray skillRightRay = new Ray(spawn.position, Quaternion.Euler(0, 2 * adjustAngle, 0) * straightRay.direction);
+            Ray skillLeftRay = new Ray(spawn.position, Quaternion.Euler(0, -2 * adjustAngle, 0) * straightRay.direction);
 
             checkRayCollision(skillRightRay, shootDist);
             checkRayCollision(skillLeftRay, shootDist);

@@ -29,11 +29,13 @@ public class GameManager : MonoBehaviour {
     [SerializeField]
     private Player[] playerList;
     private Player player;
+    [SerializeField]
+    private GameCamera topDownCam;
 
     void OnEnable () {
-        //PlayerPrefs.GetInt("playerLoadout")
         // Spawns the player into the game based on menu selection; 
         player = Instantiate(playerList[PlayerPrefs.GetInt("playerLoadout")], new Vector3(0f, 1f, 0f), Quaternion.Euler(0f, 0f, 0f) );
+        topDownCam.setPlayerTarget(player);
         enemyProbability = baseEnemyProbability;
         StartCoroutine(initSpawnTime());
     }

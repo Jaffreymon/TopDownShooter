@@ -6,6 +6,24 @@ public abstract class CharAbility : MonoBehaviour {
     private float cooldownTimer;
     private float skillUpTime;
 
+    [SerializeField]
+    private SkillUI skillUI;
+
+    protected virtual void Start()
+    {
+        skillUI = GameObject.FindGameObjectWithTag("skillUI").GetComponent<SkillUI>();
+    }
+
+    private void Update()
+    {
+        if(!isSkillActive())
+        {
+            //Debug.Log("Curr Time: " + Time.time + "\t Available: " + cooldownTimer);
+            skillUI.updateTimer(cooldownTimer - Time.time);
+            skillUI.toggleUI(true);
+        }
+    }
+
     public abstract void activate();
 
     public float getCooldown() { return cooldown; }
@@ -13,14 +31,15 @@ public abstract class CharAbility : MonoBehaviour {
     public void setCooldown(float _coolDown) { cooldown = _coolDown; }
 
     // Return bool of ability cooldown in effect
-    public bool isCooldownOver()
+    public bool isSkillActive()
     {
-        //Debug.Log("Curr Time: " + Time.time + "\t Available: " + cooldownTimer);
-        return (Time.time > cooldownTimer);
+        return (Time.time >= cooldownTimer);
     }
 
     public void assignCoolDown()
     {
         cooldownTimer = Time.time + cooldown;
     }
+
+    public SkillUI getSkillUI() { return skillUI; }
 }
