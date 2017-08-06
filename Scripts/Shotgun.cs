@@ -96,4 +96,14 @@ public class Shotgun : Gun {
     {
         tracer.endWidth = (checkSkillUsed() == true) ? skillEndSpread : defaultEndSpread;
     }
+
+    public float getDamage()
+    {
+        return shotgunDamage;
+    }
+
+    public int getAmmoCount()
+    {
+        return shotgunMaxAmmo;
+    }
 }

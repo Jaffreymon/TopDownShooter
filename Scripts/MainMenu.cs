@@ -22,8 +22,6 @@ public class MainMenu : MonoBehaviour {
 
     [SerializeField]
     private Toggle fullscreenToggle;
-    [SerializeField]
-    private Image checkmark;
 
     [SerializeField]
     private Dropdown textureQualityOption;

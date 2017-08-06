@@ -54,6 +54,16 @@ public class Gun : MonoBehaviour {
         currMagAmmo = maxMagAmmo;
     }
 
+    public void setGunDamage(float _damage)
+    {
+        gunDamage = _damage;
+    }
+
+    public void setGunAmmo(int _ammo)
+    {
+        currMagAmmo = _ammo;
+    }
+
 	public virtual void Shoot()
     {
         if (canShoot())

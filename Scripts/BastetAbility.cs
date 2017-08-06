@@ -21,10 +21,16 @@ public class BastetAbility : CharAbility {
 
     IEnumerator activateSkill()
     {
-        assignCoolDown();
         // Activate skill
-        //TODO activate skill music
+        assignCoolDown();
         shotgun.toggleSkill();
+
+        //TODO activate skill music
+
+        // Damage increase and ammo reset
+        float tmpDamage = shotgun.getDamage();
+        shotgun.setGunDamage(tmpDamage * 1.5f);
+        shotgun.setGunAmmo(shotgun.getAmmoCount());
 
         // Skill is up for some time
         yield return new WaitForSeconds(lifeTime);
@@ -32,6 +38,7 @@ public class BastetAbility : CharAbility {
         // Deactivate skill
         //TODO deactivate skill music
         shotgun.toggleSkill();
+        shotgun.setGunDamage(tmpDamage);
         getSkillUI().toggleUI(false);
     }
 }

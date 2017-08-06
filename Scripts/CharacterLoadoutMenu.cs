@@ -25,7 +25,7 @@ public class CharacterLoadoutMenu : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        rotationPace = 1f;
+        rotationPace = 0.6f;
         placeHolder = GetComponent<Transform>();
 
         GameObject[] loadouts = Resources.LoadAll<GameObject>("Loadouts");
@@ -54,8 +54,7 @@ public class CharacterLoadoutMenu : MonoBehaviour {
         DontDestroyOnLoad(GetComponent<AudioSource>());
     }
 
-    // Update is called once per frame
-    void Update () {
+    void FixedUpdate () {
         loadoutLineup[idx].transform.Rotate(0,rotationPace,0);
 	}
 
