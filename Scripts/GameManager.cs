@@ -32,12 +32,21 @@ public class GameManager : MonoBehaviour {
     [SerializeField]
     private GameCamera topDownCam;
 
+    private MusicManager musicManager;
+
     void OnEnable () {
         // Spawns the player into the game based on menu selection; 
         player = Instantiate(playerList[PlayerPrefs.GetInt("playerLoadout")], new Vector3(0f, 1f, 0f), Quaternion.Euler(0f, 0f, 0f) );
+        musicManager = GameObject.FindGameObjectWithTag("musicManager").GetComponent<MusicManager>();
+        musicManager.toggleMenuToGameMusic(true);
         topDownCam.setPlayerTarget(player);
         enemyProbability = baseEnemyProbability;
         StartCoroutine(initSpawnTime());
+    }
+
+    private void OnDisable()
+    {
+        musicManager.toggleMenuToGameMusic(false);
     }
 
     void Update()
@@ -66,7 +75,7 @@ public class GameManager : MonoBehaviour {
     {
         while( true )
         {
-            //spawnEnemy();
+            spawnEnemy();
             yield return new WaitForSeconds(spawnTimeDelay);
         }
     }
