@@ -19,6 +19,14 @@ public class BastetAbility : CharAbility {
         }
     }
 
+    public override void modifyDmgMultiplier(int _playerLvl)
+    {
+        if (_playerLvl < maxLvl)
+        {
+            skillDmgMultiplier *= Mathf.Exp((_playerLvl - 1) / 2);
+        }
+    }
+
     IEnumerator activateSkill()
     {
         // Activate skill
@@ -29,7 +37,7 @@ public class BastetAbility : CharAbility {
 
         // Damage increase and ammo reset
         float tmpDamage = shotgun.getDamage();
-        shotgun.setGunDamage(tmpDamage * 1.5f);
+        shotgun.setGunDamage(tmpDamage * skillDmgMultiplier);
         shotgun.setGunAmmo(shotgun.getAmmoCount());
 
         // Skill is up for some time
@@ -39,6 +47,5 @@ public class BastetAbility : CharAbility {
         //TODO deactivate skill music
         shotgun.toggleSkill();
         shotgun.setGunDamage(tmpDamage);
-        getSkillUI().toggleUI(false);
     }
 }

@@ -20,11 +20,10 @@ public class GameManager : MonoBehaviour {
     // Private game variables
     private const int baseEnemyProbability = 41;
     private int enemyProbability;
-    private float playerLevelModifier = 0.33f;
-    private float dayCountModifier = 0.25f;
+    private float playerLevelModifier = 1.5f;
 
     // Static game components
-    public DayNightCycle dayManager;
+    //public DayNightCycle dayManager;
     public Text enemyCountHUD;
     [SerializeField]
     private Player[] playerList;
@@ -37,8 +36,8 @@ public class GameManager : MonoBehaviour {
     void OnEnable () {
         // Spawns the player into the game based on menu selection; 
         player = Instantiate(playerList[PlayerPrefs.GetInt("playerLoadout")], new Vector3(0f, 1f, 0f), Quaternion.Euler(0f, 0f, 0f) );
-        musicManager = GameObject.FindGameObjectWithTag("musicManager").GetComponent<MusicManager>();
-        musicManager.toggleMenuToGameMusic(true);
+        GameObject musicObj = GameObject.FindGameObjectWithTag("musicManager");
+        if (musicObj) { musicManager = musicObj.GetComponent<MusicManager>();  musicManager.toggleMenuToGameMusic(true); }
         topDownCam.setPlayerTarget(player);
         enemyProbability = baseEnemyProbability;
         StartCoroutine(initSpawnTime());
@@ -46,6 +45,7 @@ public class GameManager : MonoBehaviour {
 
     private void OnDisable()
     {
+        if (!musicManager) { return; }
         musicManager.toggleMenuToGameMusic(false);
     }
 
@@ -91,10 +91,10 @@ public class GameManager : MonoBehaviour {
     {
         // Enemy type based on current probability, player level, and day count
         int levelWeight =  Mathf.FloorToInt(player.getPlayerLevel() * playerLevelModifier);
-        int dayWeight = Mathf.FloorToInt(player.getPlayerLevel() * dayCountModifier);
-        int enemyType = Random.Range(0, enemyProbability + levelWeight + dayWeight);
 
-        if( enemyType <= 40)
+        int enemyType = Random.Range(0, enemyProbability + levelWeight /*+ dayManager.getDaysPassed()*/);
+
+        if( enemyType <= 30)
         {
             return 0;
         }
@@ -115,6 +115,7 @@ public class GameManager : MonoBehaviour {
 
     public void setSpawnTime(float _newSpawnDelay)
     {
+        Debug.Log(_newSpawnDelay);
         spawnTimeDelay = _newSpawnDelay;
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DayNightCycle : MonoBehaviour {
 
@@ -35,7 +33,7 @@ public class DayNightCycle : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         // Light rotations; preserves degrees within [-90, 270] due to sun's tilt
         float sunRotation = ((earthRotationZ * (float)cycleCalc) % circleRotation) * Time.timeScale;
         transform.Rotate(0, 0, sunRotation, Space.World);
@@ -64,10 +62,14 @@ public class DayNightCycle : MonoBehaviour {
         if (gui != null) {
             gui.SetDayCount(++dayCount);
         }
+        else
+        {
+            return;
+        }
         // Update to delay decrease in rates
-        if ((dayCount % daysToDoubleSpawnRate) == 0 && gm != null) {
-            // enemy spawn delay decreases by 1 sec every few days
-            gm.setSpawnTime(Mathf.Clamp(gm.getSpawnTime() - 1, 4f, 10f));
+        if ( gm.getSpawnTime() >= 1 && (dayCount % daysToDoubleSpawnRate) == 0 && gm != null) {
+            // enemy spawn delay decreases every few days until minimum rate
+            gm.setSpawnTime(Mathf.Clamp(gm.getSpawnTime() - (dayCount * Mathf.Sqrt(dayCount/4)), 1f, 10f));
         }
     }
 

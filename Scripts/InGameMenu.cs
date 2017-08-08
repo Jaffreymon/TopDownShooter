@@ -20,6 +20,11 @@ public class InGameMenu : MonoBehaviour {
         Time.timeScale = 1;
     }
 
+    private void OnDisable()
+    {
+        Time.timeScale = 1;
+    }
+
     public void pause()
     {
         gameGUI.SetActive(inOptions);

@@ -48,6 +48,7 @@ public class Player : Entity {
     {
         level++;
         nextExperienceLvl = level * 50 + Mathf.Pow(level * 2, 2);
+        ability.modifyDmgMultiplier(level);
 
         AddExperience(0);
     }

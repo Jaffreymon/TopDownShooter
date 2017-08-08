@@ -11,6 +11,7 @@ public class ScheatAbility : CharAbility
     {
         base.Start();
         minigun = GetComponentInChildren<Minigun>();
+        skillDmgMultiplier = 1.7f;
     }
 
     public override void activate()
@@ -21,12 +22,24 @@ public class ScheatAbility : CharAbility
         }
     }
 
+    public override void modifyDmgMultiplier(int _playerLvl)
+    {
+        if (_playerLvl < maxLvl)
+        {
+            skillDmgMultiplier *= Mathf.Exp((_playerLvl - 1) / 2);
+        }
+    }
+
     IEnumerator activateSkill()
     {
-        assignCoolDown();
         // Activate skill
-        //TODO activate skill music
+        assignCoolDown();
         minigun.toggleSkill();
+
+        //TODO activate skill music
+        float tmpDamage = minigun.getDamage();
+        minigun.setGunDamage(tmpDamage * skillDmgMultiplier);
+        minigun.setGunAmmo(minigun.getAmmoCount());
 
         // Skill is up for some time
         yield return new WaitForSeconds(lifeTime);
@@ -34,6 +47,6 @@ public class ScheatAbility : CharAbility
         // Deactivate skill
         //TODO deactivate skill music
         minigun.toggleSkill();
-        getSkillUI().toggleUI(false);
+        minigun.setGunDamage(tmpDamage);
     }
 }

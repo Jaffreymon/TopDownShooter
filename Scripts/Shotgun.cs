@@ -6,7 +6,7 @@ public class Shotgun : Gun {
 
     private float shotgunRPM = 70f;
     private float shotgunDamage = 143f;
-    private int shotgunMaxAmmo = 7;
+    private int shotgunMaxAmmo = 8;
     private float shotgunShootDist = 6f;
     private GunType shotgunGunType = GunType.Semi;
 

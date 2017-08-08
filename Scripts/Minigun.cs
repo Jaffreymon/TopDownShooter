@@ -5,7 +5,7 @@ using UnityEngine;
 public class Minigun : Gun {
 
     private float minigunRPM = 600f;
-    private float minigunDamage = 10f;
+    private float minigunDamage = 27f;
     private int minigunMaxAmmo = 100;
     private float minigunShootDist = 20f;
     private GunType minigunGunType = GunType.Auto;
@@ -165,6 +165,16 @@ public class Minigun : Gun {
     }
 
     public void toggleBarrelRev(bool _set) { isBarrelSpinning= _set; }
+
+    public float getDamage()
+    {
+        return minigunDamage;
+    }
+
+    public int getAmmoCount()
+    {
+        return minigunMaxAmmo;
+    }
 
     // Add minigun barrel revving
     IEnumerator minigunRevUp()
