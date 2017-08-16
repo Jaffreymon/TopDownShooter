@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,7 +19,7 @@ public class GameManager : MonoBehaviour {
     // Private game variables
     private const int baseEnemyProbability = 41;
     private int enemyProbability;
-    private float playerLevelModifier = 1.5f;
+    private const float playerLevelModifier = 1.5f;
 
     // Static game components
     //public DayNightCycle dayManager;
@@ -75,7 +74,7 @@ public class GameManager : MonoBehaviour {
     {
         while( true )
         {
-            spawnEnemy();
+            //spawnEnemy();
             yield return new WaitForSeconds(spawnTimeDelay);
         }
     }
@@ -89,22 +88,30 @@ public class GameManager : MonoBehaviour {
     // Gets random enemy type to spawn
     private int getEnemyType()
     {
-        // Enemy type based on current probability, player level, and day count
         int levelWeight =  Mathf.FloorToInt(player.getPlayerLevel() * playerLevelModifier);
 
+        // Enemy type based on current probability and player level
         int enemyType = Random.Range(0, enemyProbability + levelWeight /*+ dayManager.getDaysPassed()*/);
 
-        if( enemyType <= 30)
+        if (enemyType == 0)
         {
+            // Spawn tamadra
             return 0;
+        }
+        else if( enemyType <= 30)
+        {
+            // Spawn easy enemy
+            return 1;
         }
         else if( enemyType <= 60)
         {
-            return 1;
+            // Spawn medium enemy
+            return 2;
         }
         else
         {
-            return 2;
+            // Spawn hard enemy
+            return 3;
         }
     }
 

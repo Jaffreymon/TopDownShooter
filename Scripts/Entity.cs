@@ -23,7 +23,7 @@ public class Entity : MonoBehaviour {
         return health;
     }
 
-    protected void addHealth(float _heal)
+    public void addHealth(float _heal)
     {
         health += _heal;
     }
