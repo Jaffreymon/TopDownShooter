@@ -5,11 +5,11 @@ using UnityEngine;
 public class Entity : MonoBehaviour {
 
     [SerializeField]
-    private float health;
+    protected float health;
 
     public virtual void takeDamage(float dmg)
     {
-        health -= dmg;
+        setHealth(health - dmg);
 
         if(health <= 0)
         {
@@ -23,9 +23,14 @@ public class Entity : MonoBehaviour {
         return health;
     }
 
-    public void addHealth(float _heal)
+    protected void setHealth(float _health)
     {
-        health += _heal;
+        health = _health;
+    }
+
+    public virtual void addHealth(float _heal)
+    {
+        setHealth(health + _heal);
     }
 
     public virtual void Die()

@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour {
     {
         while( true )
         {
-            //spawnEnemy();
+            spawnEnemy();
             yield return new WaitForSeconds(spawnTimeDelay);
         }
     }
